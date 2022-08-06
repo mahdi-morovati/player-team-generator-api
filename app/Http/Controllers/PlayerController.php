@@ -24,6 +24,7 @@ class PlayerController extends Controller
 
     public function store(PlayerStoreRequest $request, PlayerStoreService $playerStoreService)
     {
+//        $player = $playerStoreService->s
         return response("Failed", 500);
     }
 
