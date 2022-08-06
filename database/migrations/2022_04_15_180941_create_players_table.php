@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('players', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->enum('position', ['defender', 'midfielder', 'forward']);
+            $table->timestamps();
         });
     }
 
