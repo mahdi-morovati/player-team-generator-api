@@ -158,37 +158,52 @@ class PlayerControllerCreateTest extends PlayerControllerBaseTest
             [[
                 'playerSkills' => [
                     0 => [
-                        'skillw' => 'attack',
-                        'valuew' => 60
-                    ],
-                    1 => [
-                        'skillw' => 'speed',
-                        'valuew' => 80
+                        'skill' => null,
+                        'value' => 60
+                    ]
+                ]
+            ], 'playerSkills'],
+            [[
+                'playerSkills' => [
+                    0 => [
+                        'skill' => 'attack',
+                        'value' => null
+                    ]
+                ]
+            ], 'playerSkills'],
+            [[
+                'playerSkills' => [
+                    0 => [
+                        'skill' => 'attack',
+                    ]
+                ]
+            ], 'playerSkills'],
+            [[
+                'playerSkills' => [
+                    0 => [
+                        'value' => 60
+                    ]
+                ]
+            ], 'playerSkills'],
+            [[
+                'playerSkills' => [
+                    0 => [
+                        'skill' => 'wrong-skill',
+                        'value' => 60
+                    ]
+                ]
+            ], 'playerSkills'],
+
+            [[
+                'playerSkills' => [
+                    0 => [
+                        'skill' => 'attack',
+                        'value' => 'false-value'
                     ]
                 ]
             ], 'playerSkills'],
 
         ];
-    }
-
-    public function _testInvalidPosition()
-    {
-        $data = [
-            'position' => 'defender',
-            'playerSkills' => [
-                0 => [
-                    'skill' => 'attack',
-                    'value' => 60
-                ],
-                1 => [
-                    'skill' => 'speed',
-                    'value' => 80
-                ]
-            ]
-        ];
-        $res = $this->postJson(self::REQ_URI, $data);
-        $res->assertStatus(422)
-            ->assertJsonPath('message', 'The name field is required.');
     }
 
 }
