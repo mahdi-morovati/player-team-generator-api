@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\PlayerSkill;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class PlayerStoreRequest extends FormRequest
 {
@@ -28,7 +30,7 @@ class PlayerStoreRequest extends FormRequest
             'position' => 'required|string',
             'playerSkills' => 'required|array',
             'playerSkills.*' => 'required',
-            'playerSkills.*.name' => 'required|string',
+            'playerSkills.*.skill' => ['required', Rule::in(array_keys(PlayerSkill::SKILLS))],
             'playerSkills.*.value' => 'required|integer',
         ];
     }

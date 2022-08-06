@@ -14,4 +14,9 @@ abstract class BaseRepository
     }
 
     abstract public function model();
+
+    public function store(array $data)
+    {
+        return $this->model->create($data);
+    }
 }

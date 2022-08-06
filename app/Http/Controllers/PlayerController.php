@@ -8,6 +8,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PlayerStoreRequest;
+use App\Http\Resources\PlayerResource;
 use App\Services\Player\PlayerStoreService;
 
 class PlayerController extends Controller
@@ -24,8 +25,9 @@ class PlayerController extends Controller
 
     public function store(PlayerStoreRequest $request, PlayerStoreService $playerStoreService)
     {
-//        $player = $playerStoreService->s
-        return response("Failed", 500);
+        $player = $playerStoreService->store($request->name, $request->position, $request->playerSkills);
+
+        return new PlayerResource($player);
     }
 
     public function update()

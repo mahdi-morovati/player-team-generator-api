@@ -16,6 +16,7 @@ class PlayerControllerCreateTest extends PlayerControllerBaseTest
 {
     public function testHappy()
     {
+        $this->withoutExceptionHandling();
         $data = [
             "name" => "test",
             "position" => "defender",
@@ -34,17 +35,19 @@ class PlayerControllerCreateTest extends PlayerControllerBaseTest
         $res = $this->postJson(self::REQ_URI, $data);
 
         $this->assertNotNull($res);
-        $res->assertOk()
+        $res->assertCreated()
             ->assertJsonStructure([
-                'id',
-                'name',
-                'position',
-                'playerSkills' => [
-                    '*' => [
-                        'id',
-                        'skill',
-                        'value',
-                        'playerId',
+                "data" => [
+                    'id',
+                    'name',
+                    'position',
+                    'playerSkills' => [
+                        '*' => [
+                            'id',
+                            'skill',
+                            'value',
+                            'playerId',
+                        ]
                     ]
                 ]
             ]);
@@ -55,18 +58,15 @@ class PlayerControllerCreateTest extends PlayerControllerBaseTest
     {
         $response->assertJson([
             'data' => [
-                "id" => $data["id"],
                 "name" => $data["name"],
-                "position"  => $data["position"],
-                "playerSkills" =>  collect($data)->map(function ($data) {
+                "position" => $data["position"],
+                "playerSkills" => collect($data['playerSkills'])->map(function ($array) {
                     return [
-                        'id' => $data['id'],
-                        'skill' => $data['skill'],
-                        'value' => $data['value'],
-                        'playerId' => $data['playerId'],
+                        'skill' => $array['skill'],
+                        'value' => $array['value'],
                     ];
                 })->toArray()
-            ],
+            ]
         ]);
     }
 

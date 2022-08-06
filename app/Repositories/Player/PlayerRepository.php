@@ -12,9 +12,4 @@ class PlayerRepository extends BaseRepository implements PlayerRepositoryInterfa
         return Player::class;
     }
 
-
-    public function create(string $name, string $position)
-    {
-        // TODO: Implement create() method.
-    }
 }

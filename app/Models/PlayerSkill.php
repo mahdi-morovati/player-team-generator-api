@@ -20,6 +20,13 @@ class PlayerSkill extends Model
     const SKILL_SPEED = "speed";
     const SKILL_STRENGTH = "strength";
     const SKILL_STAMINA = "stamina";
+    const SKILLS = [
+      self::SKILL_DEFENSE => 'دفاع',
+      self::SKILL_ATTACK => 'حمله',
+      self::SKILL_SPEED => 'سرعت',
+      self::SKILL_STRENGTH => 'قدرت',
+      self::SKILL_STAMINA => 'استقامت',
+    ];
 
     protected $fillable = [
         'skill',
