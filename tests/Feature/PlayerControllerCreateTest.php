@@ -11,7 +11,7 @@ namespace Tests\Feature;
 
 class PlayerControllerCreateTest extends PlayerControllerBaseTest
 {
-    public function test_sample()
+    public function _testHappy()
     {
         $data = [
             "name" => "test",
@@ -31,5 +31,24 @@ class PlayerControllerCreateTest extends PlayerControllerBaseTest
         $res = $this->postJson(self::REQ_URI, $data);
 
         $this->assertNotNull($res);
+        $res->assertOk()
+            ->assertJsonStructure([
+                'id',
+                'name',
+                'position',
+                'playerSkills' => [
+                    '*' => [
+                        'id',
+                        'skill',
+                        'value',
+                        'playerId',
+                    ]
+                ]
+            ]);
+    }
+
+    public function test()
+    {
+
     }
 }
