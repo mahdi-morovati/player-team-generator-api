@@ -9,7 +9,6 @@
 namespace Tests\Feature;
 
 
-use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Testing\TestResponse;
 
 class PlayerControllerCreateTest extends PlayerControllerBaseTest
@@ -75,8 +74,6 @@ class PlayerControllerCreateTest extends PlayerControllerBaseTest
      */
     public function testValidation(array $invalidData, string $invalidParameter)
     {
-//        $this->withoutExceptionHandling();
-
         $validData = [
             'name' => 'player 1',
             'position' => 'defender',
@@ -100,6 +97,33 @@ class PlayerControllerCreateTest extends PlayerControllerBaseTest
         $res->assertJsonValidationErrors([$invalidParameter]);
     }
 
+    /**
+     * @dataProvider skillValidationDataProvider
+     */
+    public function testValidationPlayerSkills(array $invalidData, string $invalidParameter)
+    {
+        $validData = [
+            'name' => 'player 1',
+            'position' => 'defender',
+            'playerSkills' => [
+                0 => [
+                    'skill' => 'attack',
+                    'value' => 60
+                ],
+                1 => [
+                    'skill' => 'speed',
+                    'value' => 80
+                ]
+            ]
+        ];
+
+        $data = array_merge($validData, $invalidData);
+        $res = $this->postJson(self::REQ_URI, $data);
+
+        $res->assertStatus(422);
+
+    }
+
     private function validationDataProvider(): array
     {
         return [
@@ -119,13 +143,30 @@ class PlayerControllerCreateTest extends PlayerControllerBaseTest
             [['position' => ['978832830234']], 'position'],
             [['position' => ['FCKGWRHQQ2']], 'position'],
 
+        ];
+    }
+
+    private function skillValidationDataProvider(): array
+    {
+        return [
             [['playerSkills' => null], 'playerSkills'],
             [['playerSkills' => ''], 'playerSkills'],
             [['playerSkills' => 12312321], 'playerSkills'],
             [['playerSkills' => []], 'playerSkills'],
             [['playerSkills' => [673890]], 'playerSkills'],
             [['playerSkills' => ['978832830234']], 'playerSkills'],
-            [['playerSkills' => ['FCKGWRHQQ2']], 'playerSkills'],
+            [[
+                'playerSkills' => [
+                    0 => [
+                        'skillw' => 'attack',
+                        'valuew' => 60
+                    ],
+                    1 => [
+                        'skillw' => 'speed',
+                        'valuew' => 80
+                    ]
+                ]
+            ], 'playerSkills'],
 
         ];
     }

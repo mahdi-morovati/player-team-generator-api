@@ -25,6 +25,8 @@ class PlayerController extends Controller
 
     public function store(PlayerStoreRequest $request, PlayerStoreService $playerStoreService)
     {
+        dump($request->playerSkills, '=========================');
+
         $player = $playerStoreService->store($request->name, $request->position, $request->playerSkills);
 
         return new PlayerResource($player);
