@@ -18,16 +18,16 @@ class PlayerControllerCreateTest extends PlayerControllerBaseTest
     {
         $this->withoutExceptionHandling();
         $data = [
-            "name" => "test",
-            "position" => "defender",
-            "playerSkills" => [
+            'name' => 'test',
+            'position' => 'defender',
+            'playerSkills' => [
                 0 => [
-                    "skill" => "attack",
-                    "value" => 60
+                    'skill' => 'attack',
+                    'value' => 60
                 ],
                 1 => [
-                    "skill" => "speed",
-                    "value" => 80
+                    'skill' => 'speed',
+                    'value' => 80
                 ]
             ]
         ];
@@ -37,7 +37,7 @@ class PlayerControllerCreateTest extends PlayerControllerBaseTest
         $this->assertNotNull($res);
         $res->assertCreated()
             ->assertJsonStructure([
-                "data" => [
+                'data' => [
                     'id',
                     'name',
                     'position',
@@ -58,9 +58,9 @@ class PlayerControllerCreateTest extends PlayerControllerBaseTest
     {
         $response->assertJson([
             'data' => [
-                "name" => $data["name"],
-                "position" => $data["position"],
-                "playerSkills" => collect($data['playerSkills'])->map(function ($array) {
+                'name' => $data['name'],
+                'position' => $data['position'],
+                'playerSkills' => collect($data['playerSkills'])->map(function ($array) {
                     return [
                         'skill' => $array['skill'],
                         'value' => $array['value'],
@@ -78,16 +78,16 @@ class PlayerControllerCreateTest extends PlayerControllerBaseTest
 //        $this->withoutExceptionHandling();
 
         $validData = [
-            "name" => "player 1",
-            "position" => "defender",
-            "playerSkills" => [
+            'name' => 'player 1',
+            'position' => 'defender',
+            'playerSkills' => [
                 0 => [
-                    "skill" => "attack",
-                    "value" => 60
+                    'skill' => 'attack',
+                    'value' => 60
                 ],
                 1 => [
-                    "skill" => "speed",
-                    "value" => 80
+                    'skill' => 'speed',
+                    'value' => 80
                 ]
             ]
         ];
@@ -133,15 +133,15 @@ class PlayerControllerCreateTest extends PlayerControllerBaseTest
     public function _testInvalidPosition()
     {
         $data = [
-            "position" => "defender",
-            "playerSkills" => [
+            'position' => 'defender',
+            'playerSkills' => [
                 0 => [
-                    "skill" => "attack",
-                    "value" => 60
+                    'skill' => 'attack',
+                    'value' => 60
                 ],
                 1 => [
-                    "skill" => "speed",
-                    "value" => 80
+                    'skill' => 'speed',
+                    'value' => 80
                 ]
             ]
         ];
