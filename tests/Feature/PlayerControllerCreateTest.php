@@ -9,7 +9,6 @@
 namespace Tests\Feature;
 
 
-use Illuminate\Testing\TestResponse;
 
 class PlayerControllerCreateTest extends PlayerControllerBaseTest
 {
@@ -51,22 +50,6 @@ class PlayerControllerCreateTest extends PlayerControllerBaseTest
                 ]
             ]);
         $this->assertResponseContainsPlayer($res, $data);
-    }
-
-    private function assertResponseContainsPlayer(TestResponse $response, array $data): void
-    {
-        $response->assertJson([
-            'data' => [
-                'name' => $data['name'],
-                'position' => $data['position'],
-                'playerSkills' => collect($data['playerSkills'])->map(function ($array) {
-                    return [
-                        'skill' => $array['skill'],
-                        'value' => $array['value'],
-                    ];
-                })->toArray()
-            ]
-        ]);
     }
 
     /**

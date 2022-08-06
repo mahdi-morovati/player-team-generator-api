@@ -8,10 +8,14 @@
 namespace Tests\Feature;
 
 
+use App\Models\Player;
+use App\Models\PlayerSkill;
+
 class PlayerControllerUpdateTest extends PlayerControllerBaseTest
 {
     public function test_sample()
     {
+        Player::unguard();
         $data = [
             "name" => "test",
             "position" => "defender",
@@ -26,9 +30,29 @@ class PlayerControllerUpdateTest extends PlayerControllerBaseTest
                 ]
             ]
         ];
+        $player = Player::factory()->has(PlayerSkill::factory()->count(2))->state(['id' => 1])->create();
 
         $res = $this->putJson(self::REQ_URI . '1', $data);
 
         $this->assertNotNull($res);
+
+        $this->assertNotNull($res);
+        $res->assertOk()
+            ->assertJsonStructure([
+                'data' => [
+                    'id',
+                    'name',
+                    'position',
+                    'playerSkills' => [
+                        '*' => [
+                            'id',
+                            'skill',
+                            'value',
+                            'playerId',
+                        ]
+                    ]
+                ]
+            ]);
+        $this->assertResponseContainsPlayer($res, $data);
     }
 }

@@ -16,6 +16,15 @@ class Player extends Model
 {
     use HasFactory;
 
+    const POSITION_DEFENDER = "defender";
+    const POSITION_MIDFIELDER = "midfielder";
+    const POSITION_FORWARD = "forward";
+    const POSITIONS = [
+        self::POSITION_DEFENDER => 'مدافع',
+        self::POSITION_MIDFIELDER => 'هافبک',
+        self::POSITION_FORWARD => 'ماهجم',
+    ];
+
     protected $fillable = [
         'name',
         'position'
