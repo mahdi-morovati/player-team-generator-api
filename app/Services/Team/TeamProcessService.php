@@ -23,9 +23,9 @@ class TeamProcessService extends TeamCommonService
 
                 $tmp = $bestPlayerInPositionSkill->merge($bestPlayerInPosition);
             }
-//            if ($bestPlayerInPositionSkill->count() < $numberOfPlayers) {
-//                return ResponderFacade::notFound(__('messages.response.insufficient-number-of-players', ['position' => $position]));
-//            }
+            if ($bestPlayerInPositionSkill->count() < $numberOfPlayers) {
+                return ResponderFacade::notFound(__('messages.response.insufficient-number-of-players', ['position' => $position]));
+            }
             $players = $players->merge($tmp);
         }
         return $players;
