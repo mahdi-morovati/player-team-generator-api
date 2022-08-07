@@ -18,15 +18,15 @@ class TeamProcessService extends TeamCommonService
             $numberOfPlayers = $item['numberOfPlayers'];
             $bestPlayerInPositionSkill = $this->repository->getBestPlayerInPositionSkill($position, $skill, $numberOfPlayers);
             $count = $bestPlayerInPositionSkill->count();
-            if ($count <$numberOfPlayers) {
+            if ($count < $numberOfPlayers) {
                 $bestPlayerInPosition = $this->repository->getBestPlayerInPosition($position, $numberOfPlayers - $count);
 
-                $tmp = $bestPlayerInPositionSkill->merge($bestPlayerInPosition);
+                $bestPlayerInPositionSkill = $bestPlayerInPositionSkill->merge($bestPlayerInPosition);
             }
             if ($bestPlayerInPositionSkill->count() < $numberOfPlayers) {
                 return ResponderFacade::notFound(__('messages.response.insufficient-number-of-players', ['position' => $position]));
             }
-            $players = $players->merge($tmp);
+            $players = $players->merge($bestPlayerInPositionSkill);
         }
         return $players;
     }

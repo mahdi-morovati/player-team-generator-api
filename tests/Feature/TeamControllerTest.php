@@ -77,4 +77,27 @@ class TeamControllerTest extends PlayerControllerBaseTest
             ->assertJson(['message' => __('messages.response.insufficient-number-of-players', ['position' => $position])]);
     }
 
+    public function testTrueBestPlayerWithTheSkill()
+    {
+        $position = "defender";
+        $requirements = [
+            [
+                'position' => $position,
+                'mainSkill' => "speed",
+                'numberOfPlayers' => 100
+            ]
+        ];
+
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'speed', 'value' => 10]))->create(['position' => 'defender']);
+
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'speed', 'value' => 5]))->create(['position' => 'defender']);
+
+        $res = $this->postJson(self::REQ_TEAM_URI, ['data' => $requirements]);
+
+        $this->assertNotNull($res);
+
+        $res->assertNotFound()
+            ->assertJson(['message' => __('messages.response.insufficient-number-of-players', ['position' => $position])]);
+    }
+
 }
