@@ -35,8 +35,6 @@ class PlayerControllerUpdateTest extends PlayerControllerBaseTest
         $res = $this->putJson(self::REQ_URI . '1', $data);
 
         $this->assertNotNull($res);
-
-        $this->assertNotNull($res);
         $res->assertOk()
             ->assertJsonStructure([
                 'data' => [

@@ -21,7 +21,7 @@ class PlayerStoreService extends PlayerCommonService
                 $playerSkill['player_id'] = $player->id;
                 $data[] = $playerSkill;
             }
-            $player->playerSkills()->insert($data);
+            $player->playerSkills()->createMany($data);
             $player->load('playerSkills');
             return $player;
         }, 3);

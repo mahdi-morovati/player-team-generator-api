@@ -21,9 +21,10 @@ abstract class BaseRepository
         return $this->model->create($data);
     }
 
-    public function update(Player $player, array $data): bool
+    public function update(Player $player, array $data): Player
     {
-        return $this->model->update($data);
+        $player->update($data);
+        return $player;
     }
 
     public function find($id)

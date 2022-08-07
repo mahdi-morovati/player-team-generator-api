@@ -14,10 +14,12 @@ class PlayerUpdateService extends PlayerCommonService
         $player = $this->repository->findOrFail($playerId);
 
         return \DB::transaction(function () use ($player, $name, $position, $playerSkills) {
-            $this->repository->update($player, [
+            $player = $this->repository->update($player, [
                 'name' => $name,
                 'position' => $position
             ]);
+
+            $player->playerSkills()->delete();
 
             $data =[];
             foreach ($playerSkills as $playerSkill) {
