@@ -40,7 +40,7 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e): \Illuminate\Http\Response|JsonResponse|\Symfony\Component\HttpFoundation\Response
     {
-        if (!config('debug')) {
+        if (!env('APP_DEBUG', false)) {
             if ($request->wantsJson()) {
                 return $this->handleApiException($request, $e);
             } else {
@@ -53,7 +53,7 @@ class Handler extends ExceptionHandler
         return parent::render($request, $e);
     }
 
-    private function handleApiException($request, Throwable $exception): JsonResponse
+    private function handleApiException($request, $exception): JsonResponse
     {
         $exception = $this->prepareException($exception);
         if ($exception instanceof HttpResponseException) {
