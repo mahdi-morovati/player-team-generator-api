@@ -29,8 +29,12 @@ class PlayerRepository extends BaseRepository implements PlayerRepositoryInterfa
             ->take($numberOfPlayer)->get();
     }
 
-    public function getBestPlayerInPosition(string $position, int $numberOfPlayer): Collection|array
+    public function getBestPlayerInPosition(string $position, int $numberOfPlayer, string $skipSkill): Collection|array
     {
-        return $this->model->with('playerSkills')->where('position', $position)->withMax('playerSkills', 'value')->orderBy('player_skills_max_value', 'desc')->take($numberOfPlayer)->get();
+        return $this->model->with('playerSkills')
+            ->whereHas('playerSkills', function ($query) use ($skipSkill) {
+                $query->where('skill', '!=', $skipSkill);
+            })
+            ->where('position', $position)->withMax('playerSkills', 'value')->orderBy('player_skills_max_value', 'desc')->take($numberOfPlayer)->get();
     }
 }
