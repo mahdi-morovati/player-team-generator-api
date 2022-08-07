@@ -9,6 +9,7 @@ return [
         'not-found' => 'not found',
         'unauthorizedError' => 'your ar not logged in! please login',
         'internal-error' => 'error in server. please try again',
+        'insufficient-number-of-players' => 'Insufficient number of players for position: :position'
     ],
 
 ];

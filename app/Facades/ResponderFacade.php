@@ -5,6 +5,7 @@ namespace App\Facades;
 
 
 use App\Services\Responses\ApiResponder;
+use Illuminate\Http\Response;
 
 /**
  *
@@ -16,6 +17,7 @@ use App\Services\Responses\ApiResponder;
  * @method notFound(string $message)
  * @method internalError()
  * @method unauthorizedError()
+ * @method errorWithValue(string $message, $value, int $statusCode = Response::HTTP_BAD_REQUEST)
  */
 class ResponderFacade extends BaseFacade
 {

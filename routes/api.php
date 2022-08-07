@@ -35,4 +35,4 @@ Route::group(['prefix'=>'player'], function () {
     Route::delete('/{id}', [PlayerController::class, 'destroy'])->middleware([CheckBearerToken::class]);
 });
 
-Route::post('/team/process', [TeamController::class, 'store']);
+Route::post('/team/process', [TeamController::class, 'process']);

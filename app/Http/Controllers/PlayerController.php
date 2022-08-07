@@ -9,6 +9,7 @@ namespace App\Http\Controllers;
 
 use App\Facades\ResponderFacade;
 use App\Http\Requests\PlayerStoreRequest;
+use App\Http\Resources\PlayerCollection;
 use App\Http\Resources\PlayerResource;
 use App\Services\Player\PlayerDestroyService;
 use App\Services\Player\PlayerListService;
@@ -21,7 +22,7 @@ class PlayerController extends Controller
     public function index(PlayerListService $playerListService)
     {
         $players = $playerListService->index();
-        return PlayerResource::collection($players);
+        return new PlayerCollection($players);
     }
 
     public function show()

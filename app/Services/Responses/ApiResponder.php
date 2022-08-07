@@ -9,6 +9,13 @@ class ApiResponder
 {
     protected int $statusCode;
 
+    public function errorWithValue(string $message, $value, int $statusCode = Response::HTTP_BAD_REQUEST)
+    {
+        return $this->respond([
+            'message' => $message . $value
+        ]);
+    }
+
     public function success(string $message): JsonResponse
     {
         $this->statusCode = Response::HTTP_OK;
@@ -75,7 +82,7 @@ class ApiResponder
         ]);
     }
 
-    public function getStatusCode(): int
+    private function getStatusCode(): int
     {
         return $this->statusCode;
     }
@@ -87,12 +94,11 @@ class ApiResponder
         return $this;
     }
 
-    public function respond($data): JsonResponse
+    private function respond($data): JsonResponse
     {
         return response()->json(
             $data, $this->getStatusCode()
         );
     }
-
 
 }

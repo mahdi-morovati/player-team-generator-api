@@ -8,28 +8,20 @@
 namespace Tests\Feature;
 
 
+use App\Models\Player;
+use App\Models\PlayerSkill;
+use Illuminate\Support\Collection;
+
 class TeamControllerTest extends PlayerControllerBaseTest
 {
     public function test_sample()
     {
-//        $requirements =
-//            [
-//                'position' => "defender",
-//                'mainSkill' => "speed",
-//                'numberOfPlayers' => 1
-//            ];
-
         $requirements = [
             [
                 'position' => "defender",
                 'mainSkill' => "speed",
-                'numberOfPlayers' => 1
+                'numberOfPlayers' => 3
             ],
-//            [
-//                'position' => "defender",
-//                'mainSkill' => "defense",
-//                'numberOfPlayers' => 1
-//            ],
             [
                 'position' => "midfielder",
                 'mainSkill' => "speed",
@@ -37,9 +29,28 @@ class TeamControllerTest extends PlayerControllerBaseTest
             ]
         ];
 
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'speed']))->create(['position' => 'defender']);
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'attack']))->create(['position' => 'defender']);
+
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'speed']))->create(['position' => 'midfielder']);
 
         $res = $this->postJson(self::REQ_TEAM_URI, ['data' => $requirements]);
 
         $this->assertNotNull($res);
+
+        $res->assertOk()
+            ->assertJsonStructure([
+                '*' => [
+                    'name',
+                    'position',
+                    'playerSkills' => [
+                        '*' => [
+                            'skill',
+                            'value',
+                        ]
+                    ]
+                ]
+            ]);
+        $this->assertInstanceOf(Collection::class, $res->getOriginalContent());
     }
 }
