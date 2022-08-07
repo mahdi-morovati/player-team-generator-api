@@ -31,7 +31,7 @@ class PlayerStoreRequest extends FormRequest
             'playerSkills' => 'required|array',
             'playerSkills.*' => 'required',
             'playerSkills.*.skill' => ['required', Rule::in(array_keys(PlayerSkill::SKILLS))],
-            'playerSkills.*.value' => 'required|integer',
+            'playerSkills.*.value' => 'nullable|integer',
         ];
     }
 }

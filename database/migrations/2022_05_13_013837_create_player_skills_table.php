@@ -18,7 +18,7 @@ return new class extends Migration {
                 ->constrained()
                 ->onDelete('cascade');
             $table->enum('skill', ['defense', 'attack', 'speed', 'strength', 'stamina']);
-            $table->integer('value');
+            $table->integer('value')->nullable();
             $table->timestamps();
         });
     }

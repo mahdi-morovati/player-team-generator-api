@@ -26,7 +26,7 @@ class PlayerUpdateService extends PlayerCommonService
                 $playerSkill['player_id'] = $player->id;
                 $data[] = new PlayerSkill($playerSkill);
             }
-            $player->playerSkills()->saveMany($data); // @todo fix it
+            $player->playerSkills()->saveMany($data);
             $player->load('playerSkills');
             return $player;
         }, 3);

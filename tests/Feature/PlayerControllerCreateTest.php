@@ -146,21 +146,6 @@ class PlayerControllerCreateTest extends PlayerControllerBaseTest
             [[
                 'playerSkills' => [
                     0 => [
-                        'skill' => 'attack',
-                        'value' => null
-                    ]
-                ]
-            ], 'playerSkills'],
-            [[
-                'playerSkills' => [
-                    0 => [
-                        'skill' => 'attack',
-                    ]
-                ]
-            ], 'playerSkills'],
-            [[
-                'playerSkills' => [
-                    0 => [
                         'value' => 60
                     ]
                 ]
@@ -173,7 +158,6 @@ class PlayerControllerCreateTest extends PlayerControllerBaseTest
                     ]
                 ]
             ], 'playerSkills'],
-
             [[
                 'playerSkills' => [
                     0 => [
