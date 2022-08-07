@@ -20,11 +20,6 @@ class TeamControllerTest extends PlayerControllerBaseTest
             [
                 'position' => "defender",
                 'mainSkill' => "speed",
-                'numberOfPlayers' => 3
-            ],
-            [
-                'position' => "midfielder",
-                'mainSkill' => "speed",
                 'numberOfPlayers' => 1
             ]
         ];
@@ -53,4 +48,33 @@ class TeamControllerTest extends PlayerControllerBaseTest
             ]);
         $this->assertInstanceOf(Collection::class, $res->getOriginalContent());
     }
+
+    public function testInsufficientNumberOfPlayers()
+    {
+        $position = "defender";
+        $requirements = [
+            [
+                'position' => $position,
+                'mainSkill' => "speed",
+                'numberOfPlayers' => 10
+            ],
+            [
+                'position' => "midfielder",
+                'mainSkill' => "speed",
+                'numberOfPlayers' => 1
+            ]
+        ];
+
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'speed']))->create(['position' => 'defender']);
+
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'speed']))->create(['position' => 'midfielder']);
+
+        $res = $this->postJson(self::REQ_TEAM_URI, ['data' => $requirements]);
+
+        $this->assertNotNull($res);
+
+        $res->assertNotFound()
+            ->assertJson(['message' => __('messages.response.insufficient-number-of-players', ['position' => $position])]);
+    }
+
 }
