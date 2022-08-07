@@ -34,4 +34,16 @@ class PlayerStoreRequest extends FormRequest
             'playerSkills.*.value' => 'nullable|integer',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'name' => 'required|string',
+            'position' => 'required|string',
+            'playerSkills' => 'required|array',
+            'playerSkills.*' => 'required',
+            'playerSkills.*.skill' => ['required', Rule::in(array_keys(PlayerSkill::SKILLS))],
+            'playerSkills.*.value' => 'nullable|integer',
+        ];
+    }
 }

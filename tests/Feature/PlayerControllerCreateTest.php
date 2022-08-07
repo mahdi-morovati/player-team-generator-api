@@ -11,9 +11,8 @@ namespace Tests\Feature;
 
 class PlayerControllerCreateTest extends PlayerControllerBaseTest
 {
-    public function testHappy()
+    public function test_sample()
     {
-        $this->withoutExceptionHandling();
         $data = [
             'name' => 'test',
             'position' => 'defender',
