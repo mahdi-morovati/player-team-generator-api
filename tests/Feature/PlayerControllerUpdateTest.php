@@ -37,17 +37,15 @@ class PlayerControllerUpdateTest extends PlayerControllerBaseTest
         $this->assertNotNull($res);
         $res->assertOk()
             ->assertJsonStructure([
-                'data' => [
-                    'id',
-                    'name',
-                    'position',
-                    'playerSkills' => [
-                        '*' => [
-                            'id',
-                            'skill',
-                            'value',
-                            'playerId',
-                        ]
+                'id',
+                'name',
+                'position',
+                'playerSkills' => [
+                    '*' => [
+                        'id',
+                        'skill',
+                        'value',
+                        'playerId',
                     ]
                 ]
             ]);
