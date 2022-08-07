@@ -58,11 +58,11 @@ class ApiResponder
         ]);
     }
 
-    public function internalError(string $message): JsonResponse
+    public function internalError(): JsonResponse
     {
         $this->statusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
         return $this->respond([
-            'message' => $message
+            'message' => __('messages.response.internal-error')
         ]);
 
     }

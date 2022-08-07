@@ -7,10 +7,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\ResponderFacade;
 use App\Http\Requests\PlayerStoreRequest;
 use App\Http\Resources\PlayerResource;
 use App\Services\Player\PlayerStoreService;
 use App\Services\Player\PlayerUpdateService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PlayerController extends Controller
 {
@@ -37,8 +39,11 @@ class PlayerController extends Controller
             $player = $playerUpdateService->update($id, $request->name, $request->position, $request->playerSkills);
 
             return new PlayerResource($player);
-        } catch (\Exception $exception) {
-            dd(__METHOD__);
+        } catch (ModelNotFoundException $exception) {
+            return ResponderFacade::notfound(__('messages.response.not-found'));
+        }
+        catch (\Exception $exception) {
+            return ResponderFacade::internalError();
         }
     }
 

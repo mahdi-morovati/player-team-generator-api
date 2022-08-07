@@ -11,10 +11,8 @@ class PlayerUpdateService extends PlayerCommonService
 {
     public function update($playerId, string $name, string $position, array $playerSkills)
     {
-        $player = $this->repository->find($playerId);
-        if (is_null($player)) {
-//            throw new \Exception('not found');
-        }
+        $player = $this->repository->findOrFail($playerId);
+
         return \DB::transaction(function () use ($player, $name, $position, $playerSkills) {
             $this->repository->update($player, [
                 'name' => $name,
