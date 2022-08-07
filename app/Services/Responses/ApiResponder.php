@@ -67,11 +67,11 @@ class ApiResponder
 
     }
 
-    public function unauthorizedError(string $message): JsonResponse
+    public function unauthorizedError(): JsonResponse
     {
         $this->statusCode = Response::HTTP_UNAUTHORIZED;
         return $this->respond([
-            'message' => $message,
+            'message' => __('messages.response.unauthorizedError'),
         ]);
     }
 

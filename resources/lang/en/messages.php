@@ -7,7 +7,8 @@ return [
         'destroy' => 'deleted successfully',
         'success' => 'done successfully',
         'not-found' => 'not found',
-        'internal-error' => 'error in server. please try again'
+        'unauthorizedError' => 'your ar not logged in! please login',
+        'internal-error' => 'error in server. please try again',
     ],
 
 ];

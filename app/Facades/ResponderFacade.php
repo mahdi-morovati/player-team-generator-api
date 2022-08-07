@@ -15,7 +15,7 @@ use App\Services\Responses\ApiResponder;
  * @method destroyed(string $message)
  * @method notFound(string $message)
  * @method internalError()
- * @method unauthorizedError(string $message)
+ * @method unauthorizedError()
  */
 class ResponderFacade extends BaseFacade
 {

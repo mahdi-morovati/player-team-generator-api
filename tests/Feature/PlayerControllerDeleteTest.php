@@ -13,6 +13,8 @@ use App\Models\PlayerSkill;
 class PlayerControllerDeleteTest extends PlayerControllerBaseTest
 {
 
+    const BEARER_TOKEN = 'Bearer SkFabTZibXE1aE14ckpQUUxHc2dnQ2RzdlFRTTM2NFE2cGI4d3RQNjZmdEFITmdBQkE=';
+
     public function test_sample()
     {
         Player::unguard();
@@ -21,7 +23,7 @@ class PlayerControllerDeleteTest extends PlayerControllerBaseTest
 
         $playerSkills = $player->playerSkills()->first();
 
-        $res = $this->delete(self::REQ_URI . '1');
+        $res = $this->delete(self::REQ_URI . '1', [], ['Authorization'=> self::BEARER_TOKEN]);
 
         $this->assertNotNull($res);
         $res->assertOk()
@@ -33,11 +35,19 @@ class PlayerControllerDeleteTest extends PlayerControllerBaseTest
 
     public function testNotFound()
     {
-        $res = $this->delete(self::REQ_URI . '1121212');
+        $res = $this->delete(self::REQ_URI . '1121212', [], ['Authorization'=> self::BEARER_TOKEN]);
 
         $this->assertNotNull($res);
         $res->assertNotFound()
             ->assertJson(['message' => __('messages.response.not-found')]);
+    }
 
+    public function testNotFoundLoggedIn()
+    {
+        $res = $this->delete(self::REQ_URI . '1121212', [], ['Authorization'=> '']);
+
+        $this->assertNotNull($res);
+        $res->assertUnauthorized()
+            ->assertJson(['message' => __('messages.response.unauthorizedError')]);
     }
 }
