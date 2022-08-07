@@ -33,9 +33,13 @@ class PlayerController extends Controller
 
     public function update($id, PlayerStoreRequest $request, PlayerUpdateService $playerUpdateService)
     {
-        $player = $playerUpdateService->update($id, $request->name, $request->position, $request->playerSkills);
+        try {
+            $player = $playerUpdateService->update($id, $request->name, $request->position, $request->playerSkills);
 
-        return new PlayerResource($player);
+            return new PlayerResource($player);
+        } catch (\Exception $exception) {
+            dd(__METHOD__);
+        }
     }
 
     public function destroy()

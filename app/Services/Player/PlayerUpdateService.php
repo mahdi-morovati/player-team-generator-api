@@ -4,6 +4,7 @@ namespace App\Services\Player;
 
 
 
+use App\Facades\ResponderFacade;
 use App\Models\PlayerSkill;
 
 class PlayerUpdateService extends PlayerCommonService
@@ -12,7 +13,7 @@ class PlayerUpdateService extends PlayerCommonService
     {
         $player = $this->repository->find($playerId);
         if (is_null($player)) {
-//            @todo fix
+//            throw new \Exception('not found');
         }
         return \DB::transaction(function () use ($player, $name, $position, $playerSkills) {
             $this->repository->update($player, [

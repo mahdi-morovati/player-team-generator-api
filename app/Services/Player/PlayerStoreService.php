@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class PlayerStoreService extends PlayerCommonService
 {
-    public function store(string $name, string $position, array $playerSkills)
+    public function                 store(string $name, string $position, array $playerSkills)
     {
 
         return \DB::transaction(function () use ($name, $position, $playerSkills) {
