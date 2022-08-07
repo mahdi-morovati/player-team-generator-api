@@ -11,15 +11,17 @@ use App\Facades\ResponderFacade;
 use App\Http\Requests\PlayerStoreRequest;
 use App\Http\Resources\PlayerResource;
 use App\Services\Player\PlayerDestroyService;
+use App\Services\Player\PlayerListService;
 use App\Services\Player\PlayerStoreService;
 use App\Services\Player\PlayerUpdateService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PlayerController extends Controller
 {
-    public function index()
+    public function index(PlayerListService $playerListService)
     {
-        return response("Failed", 500);
+        $players = $playerListService->index();
+        return PlayerResource::collection($players);
     }
 
     public function show()

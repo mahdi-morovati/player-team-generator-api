@@ -2,12 +2,10 @@
 
 namespace App\Services\Player;
 
-use App\Services\CommonService;
-use Illuminate\Http\Request;
 
 class PlayerStoreService extends PlayerCommonService
 {
-    public function                 store(string $name, string $position, array $playerSkills)
+    public function store(string $name, string $position, array $playerSkills)
     {
 
         return \DB::transaction(function () use ($name, $position, $playerSkills) {
@@ -16,7 +14,7 @@ class PlayerStoreService extends PlayerCommonService
                 'position' => $position
             ]);
 
-            $data =[];
+            $data = [];
             foreach ($playerSkills as $playerSkill) {
                 $playerSkill['player_id'] = $player->id;
                 $data[] = $playerSkill;

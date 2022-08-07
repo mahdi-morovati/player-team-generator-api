@@ -42,4 +42,10 @@ abstract class BaseRepository
         return $model->delete();
     }
 
+    public function all($relations = [])
+    {
+        if (!$relations) return $this->model->latest()->get();
+        return $this->model->latest()->with($relations)->get();
+    }
+
 }
