@@ -80,17 +80,40 @@ class TeamControllerTest extends PlayerControllerBaseTest
     public function testTrueBestPlayerWithTheSkill()
     {
         $position = "defender";
+        $skillBestValue = 10;
         $requirements = [
             [
                 'position' => $position,
                 'mainSkill' => "speed",
-                'numberOfPlayers' => 100
+                'numberOfPlayers' => 2
             ]
         ];
 
-        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'speed', 'value' => 10]))->create(['position' => 'defender']);
+        Player::factory()->has(PlayerSkill::factory()->state(['skill' => 'speed', 'value' => $skillBestValue]))->create(['position' => 'defender']);
+        Player::factory()->has(PlayerSkill::factory()->state(['skill' => 'speed', 'value' => 5]))->create(['position' => 'defender']);
 
-        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'speed', 'value' => 5]))->create(['position' => 'defender']);
+        $res = $this->postJson(self::REQ_TEAM_URI, ['data' => $requirements]);
+
+        $this->assertNotNull($res);
+
+        $res->assertok();
+        $this->assertEquals($skillBestValue, $res->offsetGet(0)['playerSkills'][0]['value']);
+        $this->assertEquals(5, $res->offsetGet(1)['playerSkills'][0]['value']);
+    }
+
+    public function testTrueBestPlayerWithThePositionWithoutSkill()
+    {
+        $position = "defender";
+        $requirements = [
+            [
+                'position' => $position,
+                'mainSkill' => "speed",
+                'numberOfPlayers' => 1
+            ]
+        ];
+
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'attack', 'value' => 10]))->create(['position' => 'defender']);
+
 
         $res = $this->postJson(self::REQ_TEAM_URI, ['data' => $requirements]);
 
