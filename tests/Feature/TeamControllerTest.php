@@ -148,4 +148,33 @@ class TeamControllerTest extends PlayerControllerBaseTest
         $this->assertEquals(10, $res->offsetGet(1)['playerSkills'][0]['value']);
     }
 
+    public function testTrueBestPlayerWithPositionWithoutTheSkillWithOtherSkills()
+    {
+        $position = "defender";
+        $requirements = [
+            [
+                'position' => $position,
+                'mainSkill' => "speed",
+                'numberOfPlayers' => 2
+            ]
+        ];
+
+
+        $player1 = Player::factory()->create(['position' => 'defender']);
+        $player1->playerSkills()->createMany([
+            ['skill' => 'stamina', 'value' => 10],
+            ['skill' => 'strength', 'value' => 12],
+        ]);
+        Player::factory()->has(PlayerSkill::factory()->state(['skill' => 'attack', 'value' => 20]))->create(['position' => 'defender']);
+        Player::factory()->has(PlayerSkill::factory()->state(['skill' => 'defense', 'value' => 23]))->create(['position' => 'defender']);
+
+        $res = $this->postJson(self::REQ_TEAM_URI, ['data' => $requirements]);
+
+        $this->assertNotNull($res);
+
+        $res->assertok();
+        $this->assertEquals(23, $res->offsetGet(0)['playerSkills'][0]['value']);
+        $this->assertEquals(20, $res->offsetGet(1)['playerSkills'][0]['value']);
+    }
+
 }
