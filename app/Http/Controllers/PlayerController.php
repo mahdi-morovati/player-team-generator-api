@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PlayerStoreRequest;
 use App\Http\Resources\PlayerResource;
 use App\Services\Player\PlayerStoreService;
+use App\Services\Player\PlayerUpdateService;
 
 class PlayerController extends Controller
 {
@@ -30,9 +31,11 @@ class PlayerController extends Controller
         return new PlayerResource($player);
     }
 
-    public function update()
+    public function update($id, PlayerStoreRequest $request, PlayerUpdateService $playerUpdateService)
     {
-        return response("Failed", 500);
+        $player = $playerUpdateService->update($id, $request->name, $request->position, $request->playerSkills);
+
+        return new PlayerResource($player);
     }
 
     public function destroy()
