@@ -12,4 +12,9 @@ class PlayerRepository extends BaseRepository implements PlayerRepositoryInterfa
         return Player::class;
     }
 
+    public function deletePlayerSkills(Player $player): int
+    {
+        return $player->playerSkills()->delete();
+    }
+
 }

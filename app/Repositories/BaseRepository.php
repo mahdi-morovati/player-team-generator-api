@@ -37,4 +37,9 @@ abstract class BaseRepository
         return $this->model->findOrFail($id);
     }
 
+    public function delete($model)
+    {
+        return $model->delete();
+    }
+
 }

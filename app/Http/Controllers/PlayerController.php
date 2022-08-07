@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 use App\Facades\ResponderFacade;
 use App\Http\Requests\PlayerStoreRequest;
 use App\Http\Resources\PlayerResource;
+use App\Services\Player\PlayerDestroyService;
 use App\Services\Player\PlayerStoreService;
 use App\Services\Player\PlayerUpdateService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -39,16 +40,25 @@ class PlayerController extends Controller
             $player = $playerUpdateService->update($id, $request->name, $request->position, $request->playerSkills);
 
             return new PlayerResource($player);
+
         } catch (ModelNotFoundException $exception) {
             return ResponderFacade::notfound(__('messages.response.not-found'));
-        }
-        catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             return ResponderFacade::internalError();
         }
     }
 
-    public function destroy()
+    public function destroy($playerId, PlayerDestroyService $playerDestroyService)
     {
-        return response("Failed", 500);
+        try {
+            $playerDestroyService->destroy($playerId);
+            return ResponderFacade::destroyed(__('messages.response.destroy'));
+
+        } catch (ModelNotFoundException $exception) {
+            return ResponderFacade::notfound(__('messages.response.not-found'));
+        } catch (\Exception $exception) {
+            return ResponderFacade::internalError();
+        }
     }
+
 }
