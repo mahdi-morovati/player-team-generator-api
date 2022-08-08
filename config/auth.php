@@ -108,4 +108,6 @@ return [
 
     'password_timeout' => 10800,
 
+    'bearer_token' => 'SkFabTZibXE1aE14ckpQUUxHc2dnQ2RzdlFRTTM2NFE2cGI4d3RQNjZmdEFITmdBQkE=',
+
 ];

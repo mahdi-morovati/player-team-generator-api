@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Player;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseRepository
@@ -14,4 +15,37 @@ abstract class BaseRepository
     }
 
     abstract public function model();
+
+    public function store(array $data)
+    {
+        return $this->model->create($data);
+    }
+
+    public function update(Player $player, array $data): Player
+    {
+        $player->update($data);
+        return $player;
+    }
+
+    public function find($id)
+    {
+        return $this->model->find($id);
+    }
+
+    public function findOrFail($id)
+    {
+        return $this->model->findOrFail($id);
+    }
+
+    public function delete($model)
+    {
+        return $model->delete();
+    }
+
+    public function all($relations = [])
+    {
+        if (!$relations) return $this->model->latest()->get();
+        return $this->model->latest()->with($relations)->get();
+    }
+
 }

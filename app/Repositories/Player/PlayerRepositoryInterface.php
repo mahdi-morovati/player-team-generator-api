@@ -4,5 +4,7 @@ namespace App\Repositories\Player;
 
 interface PlayerRepositoryInterface
 {
-    public function create(string $name, string $position);
+    public function getBestPlayerInPositionSkill(string $position, string $skill, int $numberOfPlayer);
+
+    public function getBestPlayerInPosition(string $position, int $numberOfPlayer, string $skipSkill);
 }
