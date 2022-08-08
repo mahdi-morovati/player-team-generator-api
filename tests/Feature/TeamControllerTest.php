@@ -101,20 +101,6 @@ class TeamControllerTest extends PlayerControllerBaseTest
 
     }
 
-    public function testValidationMessagePositionDuplicates()
-    {
-        $requirements = [['position' => Player::POSITION_DEFENDER], ['position' => Player::POSITION_DEFENDER]];
-
-        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => PlayerSkill::SKILL_SPEED]))->create(['position' => Player::POSITION_DEFENDER]);
-
-        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => PlayerSkill::SKILL_SPEED]))->create(['position' => 'midfielder']);
-        $res = $this->postJson(self::REQ_TEAM_URI, ['requirement' => $requirements]);
-
-        $res->assertStatus(422)
-            ->assertSee('must be distinct');
-
-    }
-
     private function validationDataProvider(): array
     {
         return [
@@ -229,6 +215,48 @@ class TeamControllerTest extends PlayerControllerBaseTest
         $res->assertok();
         $this->assertEquals(23, $res->offsetGet(0)['playerSkills'][0]['value']);
         $this->assertEquals(20, $res->offsetGet(1)['playerSkills'][0]['value']);
+    }
+
+    public function testValidationMessagePositionIsRequired()
+    {
+        $requirements = [['position-wrong' => Player::POSITION_DEFENDER]];
+
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => PlayerSkill::SKILL_SPEED]))->create(['position' => Player::POSITION_DEFENDER]);
+
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => PlayerSkill::SKILL_SPEED]))->create(['position' => 'midfielder']);
+        $res = $this->postJson(self::REQ_TEAM_URI, ['requirement' => $requirements]);
+
+        $res->assertStatus(422)
+            ->assertSee('is required');
+
+    }
+
+    public function testValidationMessagePositionMustBeString()
+    {
+        $requirements = [['position' => 123123]];
+
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => PlayerSkill::SKILL_SPEED]))->create(['position' => Player::POSITION_DEFENDER]);
+
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => PlayerSkill::SKILL_SPEED]))->create(['position' => 'midfielder']);
+        $res = $this->postJson(self::REQ_TEAM_URI, ['requirement' => $requirements]);
+
+        $res->assertStatus(422)
+            ->assertSee('must be string');
+
+    }
+
+    public function testValidationMessageNumberOfPlayersMustBeInteger()
+    {
+        $requirements = [['position' => Player::POSITION_DEFENDER, 'mailSkill' => PlayerSkill::SKILL_STAMINA, 'numberOfPlayers' => 'sdfsdf']];
+
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => PlayerSkill::SKILL_SPEED]))->create(['position' => Player::POSITION_DEFENDER]);
+
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => PlayerSkill::SKILL_SPEED]))->create(['position' => 'midfielder']);
+        $res = $this->postJson(self::REQ_TEAM_URI, ['requirement' => $requirements]);
+
+        $res->assertStatus(422)
+            ->assertSee('must be integer');
+
     }
 
 }
