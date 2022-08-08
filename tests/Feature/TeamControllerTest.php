@@ -24,12 +24,12 @@ class TeamControllerTest extends PlayerControllerBaseTest
             ]
         ];
 
-        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'speed']))->create(['position' => 'defender']);
-        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'attack']))->create(['position' => 'defender']);
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => PlayerSkill::SKILL_SPEED]))->create(['position' => Player::POSITION_DEFENDER]);
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => PlayerSkill::SKILL_ATTACK]))->create(['position' => Player::POSITION_DEFENDER]);
 
-        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'speed']))->create(['position' => 'midfielder']);
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => PlayerSkill::SKILL_SPEED]))->create(['position' => 'midfielder']);
 
-        $res = $this->postJson(self::REQ_TEAM_URI, ['data' => $requirements]);
+        $res = $this->postJson(self::REQ_TEAM_URI, ['requirement' => $requirements]);
 
         $this->assertNotNull($res);
 
@@ -65,11 +65,11 @@ class TeamControllerTest extends PlayerControllerBaseTest
             ]
         ];
 
-        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'speed']))->create(['position' => 'defender']);
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => PlayerSkill::SKILL_SPEED]))->create(['position' => Player::POSITION_DEFENDER]);
 
-        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'speed']))->create(['position' => 'midfielder']);
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => PlayerSkill::SKILL_SPEED]))->create(['position' => 'midfielder']);
 
-        $res = $this->postJson(self::REQ_TEAM_URI, ['data' => $requirements]);
+        $res = $this->postJson(self::REQ_TEAM_URI, ['requirement' => $requirements]);
 
         $this->assertNotNull($res);
 
@@ -91,9 +91,9 @@ class TeamControllerTest extends PlayerControllerBaseTest
             ]
         ];
 
-        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'speed']))->create(['position' => 'defender']);
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => PlayerSkill::SKILL_SPEED]))->create(['position' => Player::POSITION_DEFENDER]);
 
-        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'speed']))->create(['position' => 'midfielder']);
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => PlayerSkill::SKILL_SPEED]))->create(['position' => 'midfielder']);
         $data = array_merge($requirements, $invalidData);
         $res = $this->postJson(self::REQ_TEAM_URI, ['requirement' => $data]);
 
@@ -103,12 +103,11 @@ class TeamControllerTest extends PlayerControllerBaseTest
 
     public function testValidationMessagePositionDuplicates()
     {
-        $position = "defender";
         $requirements = [['position' => Player::POSITION_DEFENDER], ['position' => Player::POSITION_DEFENDER]];
 
-        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'speed']))->create(['position' => 'defender']);
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => PlayerSkill::SKILL_SPEED]))->create(['position' => Player::POSITION_DEFENDER]);
 
-        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'speed']))->create(['position' => 'midfielder']);
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => PlayerSkill::SKILL_SPEED]))->create(['position' => 'midfielder']);
         $res = $this->postJson(self::REQ_TEAM_URI, ['requirement' => $requirements]);
 
         $res->assertStatus(422)
@@ -144,10 +143,10 @@ class TeamControllerTest extends PlayerControllerBaseTest
             ]
         ];
 
-        Player::factory()->has(PlayerSkill::factory()->state(['skill' => 'speed', 'value' => $skillBestValue]))->create(['position' => 'defender']);
-        Player::factory()->has(PlayerSkill::factory()->state(['skill' => 'speed', 'value' => 5]))->create(['position' => 'defender']);
+        Player::factory()->has(PlayerSkill::factory()->state(['skill' => PlayerSkill::SKILL_SPEED, 'value' => $skillBestValue]))->create(['position' => Player::POSITION_DEFENDER]);
+        Player::factory()->has(PlayerSkill::factory()->state(['skill' => PlayerSkill::SKILL_SPEED, 'value' => 5]))->create(['position' => Player::POSITION_DEFENDER]);
 
-        $res = $this->postJson(self::REQ_TEAM_URI, ['data' => $requirements]);
+        $res = $this->postJson(self::REQ_TEAM_URI, ['requirement' => $requirements]);
 
         $this->assertNotNull($res);
 
@@ -168,10 +167,10 @@ class TeamControllerTest extends PlayerControllerBaseTest
             ]
         ];
 
-        Player::factory()->has(PlayerSkill::factory()->state(['skill' => 'speed', 'value' => $skillBestValue]))->create(['position' => 'defender']);
-        Player::factory()->has(PlayerSkill::factory()->state(['skill' => 'attack', 'value' => 20]))->create(['position' => 'defender']);
+        Player::factory()->has(PlayerSkill::factory()->state(['skill' => PlayerSkill::SKILL_SPEED, 'value' => $skillBestValue]))->create(['position' => Player::POSITION_DEFENDER]);
+        Player::factory()->has(PlayerSkill::factory()->state(['skill' => PlayerSkill::SKILL_ATTACK, 'value' => 20]))->create(['position' => Player::POSITION_DEFENDER]);
 
-        $res = $this->postJson(self::REQ_TEAM_URI, ['data' => $requirements]);
+        $res = $this->postJson(self::REQ_TEAM_URI, ['requirement' => $requirements]);
 
         $this->assertNotNull($res);
 
@@ -191,10 +190,10 @@ class TeamControllerTest extends PlayerControllerBaseTest
             ]
         ];
 
-        Player::factory()->has(PlayerSkill::factory()->state(['skill' => 'stamina', 'value' => 10]))->create(['position' => 'defender']);
-        Player::factory()->has(PlayerSkill::factory()->state(['skill' => 'attack', 'value' => 20]))->create(['position' => 'defender']);
+        Player::factory()->has(PlayerSkill::factory()->state(['skill' => PlayerSkill::SKILL_STAMINA, 'value' => 10]))->create(['position' => Player::POSITION_DEFENDER]);
+        Player::factory()->has(PlayerSkill::factory()->state(['skill' => PlayerSkill::SKILL_ATTACK, 'value' => 20]))->create(['position' => Player::POSITION_DEFENDER]);
 
-        $res = $this->postJson(self::REQ_TEAM_URI, ['data' => $requirements]);
+        $res = $this->postJson(self::REQ_TEAM_URI, ['requirement' => $requirements]);
 
         $this->assertNotNull($res);
 
@@ -215,15 +214,15 @@ class TeamControllerTest extends PlayerControllerBaseTest
         ];
 
 
-        $player1 = Player::factory()->create(['position' => 'defender']);
+        $player1 = Player::factory()->create(['position' => Player::POSITION_DEFENDER]);
         $player1->playerSkills()->createMany([
-            ['skill' => 'stamina', 'value' => 10],
+            ['skill' => PlayerSkill::SKILL_STAMINA, 'value' => 10],
             ['skill' => 'strength', 'value' => 12],
         ]);
-        Player::factory()->has(PlayerSkill::factory()->state(['skill' => 'attack', 'value' => 20]))->create(['position' => 'defender']);
-        Player::factory()->has(PlayerSkill::factory()->state(['skill' => 'defense', 'value' => 23]))->create(['position' => 'defender']);
+        Player::factory()->has(PlayerSkill::factory()->state(['skill' => PlayerSkill::SKILL_ATTACK, 'value' => 20]))->create(['position' => Player::POSITION_DEFENDER]);
+        Player::factory()->has(PlayerSkill::factory()->state(['skill' => PlayerSkill::SKILL_DEFENSE, 'value' => 23]))->create(['position' => Player::POSITION_DEFENDER]);
 
-        $res = $this->postJson(self::REQ_TEAM_URI, ['data' => $requirements]);
+        $res = $this->postJson(self::REQ_TEAM_URI, ['requirement' => $requirements]);
 
         $this->assertNotNull($res);
 
