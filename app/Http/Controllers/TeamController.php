@@ -11,7 +11,7 @@ class TeamController extends Controller
 {
     public function process(SelectTeamRequest $request, TeamProcessService $teamProcessService)
     {
-        $team = $teamProcessService->process($request->data);
+        $team = $teamProcessService->process($request->requirement);
         if ($team instanceof \Illuminate\Http\JsonResponse) return $team;
         return new TeamCollection($team);
     }

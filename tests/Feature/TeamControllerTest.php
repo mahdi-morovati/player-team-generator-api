@@ -77,6 +77,46 @@ class TeamControllerTest extends PlayerControllerBaseTest
             ->assertJson(['message' => __('messages.response.insufficient-number-of-players', ['position' => $position])]);
     }
 
+    /**
+     * @dataProvider validationDataProvider
+     */
+    public function testValidation(array $invalidData, string $invalidParameter)
+    {
+        $position = "defender";
+        $requirements = [
+            [
+                'position' => $position,
+                'mainSkill' => "speed",
+                'numberOfPlayers' => 1
+            ]
+        ];
+
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'speed']))->create(['position' => 'defender']);
+
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => 'speed']))->create(['position' => 'midfielder']);
+        $data = array_merge($requirements, $invalidData);
+        $res = $this->postJson(self::REQ_TEAM_URI, ['requirement' => $data]);
+
+        $res->assertStatus(422);
+
+    }
+
+    private function validationDataProvider(): array
+    {
+        return [
+            [[null], 'requirement'],
+            [[0 => ''], 'requirement'],
+            [[0 => []], 'requirement'],
+            [[0 => ['position' => Player::POSITION_DEFENDER], 1 => ['position' => Player::POSITION_DEFENDER]], 'requirement'],
+            [[0 => ['position' => Player::POSITION_DEFENDER, 'mainSkill' => null]], 'requirement'],
+            [[0 => ['position' => Player::POSITION_DEFENDER, 'mainSkill' => 234234]], 'requirement'],
+            [[0 => ['position' => Player::POSITION_DEFENDER, 'mainSkill' => PlayerSkill::SKILL_SPEED, 'numberOfPlayers' => null]], 'requirement'],
+            [[0 => ['position' => Player::POSITION_DEFENDER, 'mainSkill' => PlayerSkill::SKILL_SPEED, 'numberOfPlayers' => '']], 'requirement'],
+            [[0 => ['position' => Player::POSITION_DEFENDER, 'mainSkill' => PlayerSkill::SKILL_SPEED, 'numberOfPlayers' => 'qwrewrew']], 'requirement'],
+
+        ];
+    }
+
     public function testBestPlayerWithRequiredSkills()
     {
         $position = "defender";
