@@ -259,4 +259,21 @@ class TeamControllerTest extends PlayerControllerBaseTest
 
     }
 
+    public function testValidationMessagePositionMustBeUnique()
+    {
+        $requirements = [
+            ['position' => Player::POSITION_DEFENDER],
+            ['position' => Player::POSITION_DEFENDER]
+        ];
+
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => PlayerSkill::SKILL_SPEED]))->create(['position' => Player::POSITION_DEFENDER]);
+
+        Player::factory()->has(PlayerSkill::factory()->count(2)->state(['skill' => PlayerSkill::SKILL_SPEED]))->create(['position' => 'midfielder']);
+        $res = $this->postJson(self::REQ_TEAM_URI, ['requirement' => $requirements]);
+
+        $res->assertStatus(422)
+            ->assertSee('must be distinct');
+
+    }
+
 }
