@@ -4,11 +4,12 @@ namespace App\Services\Team;
 
 
 use App\Facades\ResponderFacade;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 
 class TeamProcessService extends TeamCommonService
 {
-    public function process(array $data): Collection
+    public function process(array $data): Collection | JsonResponse
     {
         $bestPlayerInPositionSkill = collect([]);
 

@@ -2,12 +2,9 @@
 
 return [
     'PlayerStoreRequest' => [
-        'name' => '',
-        'position' => '',
-        'playerSkills' => '',
-        'playerSkills.*' => '',
-        'playerSkills.*.skill' => '',
-        'playerSkills.*.value' => '',
+        'name' => 'Invalid value for name: :attribute',
+        'position' => 'Invalid value for position: :attribute',
+        'playerSkills' => 'Invalid value for playerSkills: :attribute',
     ],
 ];
 

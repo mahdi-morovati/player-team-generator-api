@@ -77,7 +77,7 @@ class TeamControllerTest extends PlayerControllerBaseTest
             ->assertJson(['message' => __('messages.response.insufficient-number-of-players', ['position' => $position])]);
     }
 
-    public function testTrueBestPlayerWithTheSkill()
+    public function testBestPlayerWithRequiredSkills()
     {
         $position = "defender";
         $skillBestValue = 10;
@@ -101,7 +101,7 @@ class TeamControllerTest extends PlayerControllerBaseTest
         $this->assertEquals(5, $res->offsetGet(1)['playerSkills'][0]['value']);
     }
 
-    public function testTrueBestPlayerWithPositionInsufficientSkill()
+    public function testBestPlayerWithPositionInsufficientSkillPriorityWithRequiredSkill()
     {
         $position = "defender";
         $skillBestValue = 10;
@@ -122,10 +122,10 @@ class TeamControllerTest extends PlayerControllerBaseTest
 
         $res->assertok();
         $this->assertEquals($skillBestValue, $res->offsetGet(0)['playerSkills'][0]['value']);
-        $this->assertEquals(5, $res->offsetGet(1)['playerSkills'][0]['value']);
+        $this->assertEquals(20, $res->offsetGet(1)['playerSkills'][0]['value']);
     }
 
-    public function testTrueBestPlayerWithPositionWithoutSkill()
+    public function testBestPlayerWithPositionWithoutRequiredSkill()
     {
         $position = "defender";
         $requirements = [
@@ -148,7 +148,7 @@ class TeamControllerTest extends PlayerControllerBaseTest
         $this->assertEquals(10, $res->offsetGet(1)['playerSkills'][0]['value']);
     }
 
-    public function testTrueBestPlayerWithPositionWithoutTheSkillWithOtherSkills()
+    public function testBestPlayerWithPositionWithoutRequiredSkillWithOtherSkills()
     {
         $position = "defender";
         $requirements = [
